@@ -1,78 +1,93 @@
 <template>
-  <div>
-    <div
-      v-if="article.image"
-      id="banner"
-      class="uk-height-small uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-light uk-padding"
-      :data-src="getStrapiMedia(article.image.url)"
-      uk-img
-    >
-      <h1>{{ article.title }}</h1>
-    </div>
-
-    <div class="uk-section">
-      <div class="uk-container uk-container-small">
-        <!-- eslint-disable vue/no-v-html -->
-        <div
-          v-if="article.content"
-          id="editor"
-          v-html="$md.render(article.content)"
-        />
-        <!-- eslint-enable vue/no-v-html -->
-        <p v-if="article.published_at">
-          {{ moment(article.published_at).format("MMM Do YY") }}
+  <div class="page page-article">
+    <div class="container">
+      <div class="page-header">
+        <h1 class="tl-1 page-title">{{ article.title }}</h1>
+        <p v-if="publishedDate" class="tx-big fw-bold">
+          {{ publishedDate }}
         </p>
+        <div v-if="article.author" class="page-author">
+          <AppAvatar :size="100" :image="article.author.picture" />
+          <p class="tx-big page-author-name">{{ article.author.name }}</p>
+          <p v-if="article.author.email" class="tx-default page-author-email">
+            <a class="clr-primary" :href="`mailto:${article.author.email}`">
+              {{ article.author.email }}
+            </a>
+          </p>
+        </div>
+        <ArticleSharing :seo="fullSeo" />
+        <CldImage
+          lqip
+          :ratio="1.5"
+          :image="article.image"
+          class="page-banner"
+        ></CldImage>
+      </div>
+      <div class="page-content">
+        <AppMarkdown :markdown="article.content" :images="contentImages" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import moment from "moment";
-import { getStrapiMedia } from "../../utils/medias";
-import { getMetaTags } from "../../utils/seo";
+import { format } from "date-fns";
+import CldImage from "~/components/CldImage";
+import AppAvatar from "~/components/AppAvatar";
+import AppMarkdown from "~/components/AppMarkdown";
+import ArticleSharing from "~/components/ArticleSharing";
+import { loadMarkdownImages } from "~/utils/markdown";
+import { getMetaTags } from "~/utils/seo";
 
 export default {
-  async asyncData({ $strapi, params }) {
-    const matchingArticles = await $strapi.find("articles", {
-      slug: params.slug,
-    });
+  components: { AppMarkdown, CldImage, AppAvatar, ArticleSharing },
+  async asyncData({ $strapi, $loadArticles, params: { slug } }) {
+    const articles = await $loadArticles({ slug });
+    const article = articles[0];
     return {
-      article: matchingArticles[0],
+      article: article,
       global: await $strapi.find("global"),
+      contentImages: await loadMarkdownImages($strapi, article.content),
     };
   },
-  data() {
-    return {
-      apiUrl: process.env.strapiBaseUri,
-    };
-  },
-  methods: {
-    moment,
-    getStrapiMedia,
+  computed: {
+    publishedDate() {
+      return (
+        this.article.publishedAt &&
+        format(new Date(this.article.publishedAt), "MMM do yy")
+      );
+    },
+    fullSeo() {
+      const { defaultSeo, favicon, siteName } = this.global;
+      return {
+        ...defaultSeo,
+        metaTitle: this.article.title,
+        metaDescription: this.article.description,
+        shareImage: this.article.image,
+        favicon,
+        siteName,
+      };
+    },
   },
   head() {
-    const { defaultSeo, favicon, siteName } = this.global;
-
-    // Merge default and article-specific SEO data
-    const fullSeo = {
-      ...defaultSeo,
-      metaTitle: this.article.title,
-      metaDescription: this.article.description,
-      shareImage: this.article.image,
-    };
-
+    const { siteName, metaTitle, favicon } = this.fullSeo;
     return {
       titleTemplate: `%s | ${siteName}`,
-      title: fullSeo.metaTitle,
-      meta: getMetaTags(fullSeo),
+      title: metaTitle,
+      meta: getMetaTags(this.fullSeo),
       link: [
         {
-          rel: "favicon",
-          href: getStrapiMedia(favicon.url),
+          rel: "icon",
+          type: "image/png",
+          href: favicon.url,
         },
       ],
     };
   },
 };
 </script>
+
+<style scoped lang="scss">
+.page-article {
+}
+</style>

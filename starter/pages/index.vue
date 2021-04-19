@@ -1,26 +1,30 @@
 <template>
-  <div>
-    <div class="uk-section">
-      <div class="uk-container uk-container-large">
-        <h1>{{ homepage.hero.title }}</h1>
-        <Articles :articles="articles" />
+  <div class="page page-home">
+    <div class="container">
+      <div class="page-header">
+        <h1 class="tl-1 page-title">{{ homepage.hero.title }}</h1>
+      </div>
+      <div class="page-content">
+        <Articles v-if="articles.length" :articles="articles" lazy />
+        <AppNotFound v-else />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Articles from "../components/Articles";
-import { getMetaTags } from "../utils/seo";
-import { getStrapiMedia } from "../utils/medias";
+import Articles from "~/components/Articles";
+import AppNotFound from "~/components/AppNotFound";
+import { getMetaTags } from "~/utils/seo";
 
 export default {
   components: {
     Articles,
+    AppNotFound,
   },
-  async asyncData({ $strapi }) {
+  async asyncData({ $strapi, $loadArticles }) {
     return {
-      articles: await $strapi.find("articles"),
+      articles: await $loadArticles(),
       homepage: await $strapi.find("homepage"),
       global: await $strapi.find("global"),
     };
@@ -28,8 +32,6 @@ export default {
   head() {
     const { seo } = this.homepage;
     const { defaultSeo, favicon, siteName } = this.global;
-
-    // Merge default and article-specific SEO data
     const fullSeo = {
       ...defaultSeo,
       ...seo,
@@ -41,8 +43,9 @@ export default {
       meta: getMetaTags(fullSeo),
       link: [
         {
-          rel: "favicon",
-          href: getStrapiMedia(favicon.url),
+          rel: "icon",
+          type: "image/png",
+          href: favicon.url,
         },
       ],
     };

@@ -1,10 +1,8 @@
 # Strapi Starter Nuxt Blog
 
-Nuxt starter for creating a blog with Strapi.
+Nuxt.js starter for creating a Blog with Strapi.
 
-![screenshot image](/screenshot.png)
-
-This starter allows you to try Strapi with Nuxt with the example of a simple blog. It is fully customizable and due to the fact that it is open source, fully open to contributions. So do not hesitate to add new features and report bugs!
+This starter allows you to start Strapi with Nuxt.js. It is fully customizable and due to the fact that it is open source, fully open to contributions. So do not hesitate to add new features and report bugs!
 
 ## Features
 
@@ -12,7 +10,6 @@ This starter allows you to try Strapi with Nuxt with the example of a simple blo
 - 2 Created articles
 - 3 Created categories
 - Permissions set to `true` for article and category
-- Responsive design using UIkit
 
 Pages:
 
@@ -27,10 +24,10 @@ Use our `create-strapi-starter` CLI to create your project.
 
 ```sh
 # Using Yarn
-yarn create strapi-starter my-site nuxt-blog
+yarn create strapi-starter my-site https://github.com/PavelZhuravlev/blog-starter-kit
 
 # Or using NPM
-npx create-strapi-starter my-site nuxt-blog
+npx create-strapi-starter my-site https://github.com/PavelZhuravlev/blog-starter-kit
 ```
 
 The CLI will create a monorepo, install dependencies, and run your project automatically.

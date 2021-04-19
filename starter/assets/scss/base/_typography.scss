@@ -1,0 +1,45 @@
+@for $i from 1 through length(map-get($title-sizes, xl)) {
+  .tl-#{$i} {
+    @include title($i);
+  }
+}
+
+@each $key,
+$value in map-get($text-sizes, xl) {
+  .tx-#{$key} {
+    @include text($key);
+  }
+}
+
+@each $key,
+$value in $font-weights {
+  .fw-#{$key} {
+    font-weight: $value !important;
+  }
+}
+
+@each $key,
+$value in $fonts {
+  .ff-#{$key} {
+    font-family: $value !important;
+  }
+}
+
+.clr {
+  @each $key, $color-spectrum in $custom-colors {
+    &-#{$key} {
+      color: map-get($color-spectrum, base) !important;
+      @each $key, $clr in $color-spectrum {
+        @if $key != base {
+          &-#{$key} {
+            color: $clr !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.tt-uppercase {
+  text-transform: uppercase;
+}

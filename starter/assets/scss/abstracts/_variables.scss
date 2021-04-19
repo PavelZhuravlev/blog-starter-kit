@@ -1,0 +1,105 @@
+$common-lh: 1.2em;
+$header-height: 90px;
+$footer-height: 90px;
+$form-el-height: 40px;
+
+$fonts: (
+    primary: ('Roboto', sans-serif),
+);
+
+$font-weights: (
+    light: 300,
+    regular: 400,
+    medium: 500,
+    semi-bold: 600,
+    bold: 700,
+    ultra-bold: 800,
+);
+
+$custom-colors: (
+    primary: (
+        base: dodgerblue
+    ),
+    secondary: (
+        base: coral
+    ),
+    typo: (
+        base: #000000
+    ),
+    light: (
+        base: #ffffff
+    ),
+    dark: (
+        base: #000000
+    ),
+    danger: (
+        base: red
+    ),
+    success: (
+        base: green
+    )
+);
+
+$z-indexes: (
+    default: 1,
+    below: -1,
+    fixed-elems: 1000,
+);
+
+$grid-gutter-width: 30px;
+$container-padding: 40px;
+$container-padding-sm: 15px;
+
+$grid-breakpoints: (
+    xxs: 0,
+    xs: 321px,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px
+);
+
+$container-max-widths: (
+    md: 665px + $container-padding * 2,
+    lg: 1060px + $container-padding * 2,
+    xl: 1260px + $container-padding * 2,
+);
+
+$title-sizes: (
+    xl: (
+        1: 50px,
+        2: 40px,
+        3: 30px,
+        4: 20px,
+        5: 16px,
+        6: 14px
+    ),
+    lg: (),
+    md: (
+        1: 45px,
+        2: 35px,
+        3: 25px,
+        4: null,
+        5: null,
+        6: null
+    ),
+    sm: (
+        1: 35px,
+        2: 25px,
+        3: 20px,
+        4: 16px,
+        5: 13px,
+        6: 12px
+    )
+);
+
+$text-sizes: (
+    xl: (
+        big: 18px,
+        body: 16px,
+        small: 14px
+    ),
+    lg: (),
+    md: (),
+    sm: ()
+);

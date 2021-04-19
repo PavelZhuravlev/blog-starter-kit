@@ -1,28 +1,27 @@
 <template>
   <div>
-    <div class="uk-child-width-1-2" uk-grid>
-      <div>
-        <ArticleCard
-          v-for="article in leftArticles"
+    <div class="card-list">
+      <div class="row">
+        <div
+          v-for="article in allArticles"
           :key="article.id"
-          :article="article"
-        />
-      </div>
-      <div>
-        <div class="uk-child-width-1-2@m uk-grid-match" uk-grid>
-          <ArticleCard
-            v-for="article in rightArticles"
-            :key="article.id"
-            :article="article"
-          />
+          class="col-12 col-md-6 col-lg-4"
+        >
+          <div class="card-container">
+            <ArticleCard :article="article" />
+          </div>
         </div>
       </div>
     </div>
+    <client-only v-if="lazy">
+      <infinite-loading :identifier="lazyId" @infinite="infiniteHandler">
+      </infinite-loading>
+    </client-only>
   </div>
 </template>
 
 <script>
-import ArticleCard from "./ArticleCard";
+import ArticleCard from "~/components/ArticleCard";
 
 export default {
   components: {
@@ -31,18 +30,55 @@ export default {
   props: {
     articles: {
       type: Array,
+      required: true,
       default: () => [],
     },
+    lazy: {
+      type: Boolean,
+      default: false,
+    },
+    lazyId: {
+      type: Number,
+      default: null,
+    },
+    lazyParams: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+  data() {
+    return {
+      lazyArticles: [],
+      lazyLoadStepDelay: 500,
+      lazyLoadStepCounter: 1,
+    };
   },
   computed: {
-    leftArticlesCount() {
-      return Math.ceil(this.articles.length / 5);
+    allArticles() {
+      return [...this.articles, ...this.lazyArticles];
     },
-    leftArticles() {
-      return this.articles.slice(0, this.leftArticlesCount);
+  },
+  watch: {
+    lazyId() {
+      this.lazyLoadStepCounter = 1;
+      this.lazyArticles = [];
     },
-    rightArticles() {
-      return this.articles.slice(this.leftArticlesCount, this.articles.length);
+  },
+  methods: {
+    infiniteHandler($state) {
+      setTimeout(async () => {
+        const extraArticles = await this.$loadArticles(
+          this.lazyParams,
+          this.lazyLoadStepCounter
+        );
+        if (extraArticles.length > 0) {
+          this.lazyLoadStepCounter++;
+          this.lazyArticles.push(...extraArticles);
+          $state.loaded();
+        } else {
+          $state.complete();
+        }
+      }, this.lazyLoadStepDelay);
     },
   },
 };

@@ -1,0 +1,24 @@
+@function fw($weight) {
+  @return map-get($font-weights, $weight);
+}
+
+@function ff($family) {
+  @return map-get($fonts, $family);
+}
+
+@function clr($name, $variant: base) {
+  $color-spectrum: map-get($custom-colors, $name);
+  $color: map-get($color-spectrum, $variant);
+  @return $color;
+}
+
+@function z($layer) {
+  @return map-get($z-indexes, $layer);
+}
+
+@function map-deep-get($map, $keys...) {
+  @each $key in $keys {
+    $map: map-get($map, $key);
+  }
+  @return $map;
+}

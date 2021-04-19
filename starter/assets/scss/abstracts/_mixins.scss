@@ -1,0 +1,60 @@
+@mixin generate-responsive-typo-sizes($typo-key, $typo-sizes-map) {
+  @each $breakpoint, $size-map in $typo-sizes-map {
+    $fz: map-get($size-map, $typo-key);
+    @if $fz != null {
+      @include media-breakpoint-down($breakpoint) {
+        font-size: $fz;
+      }
+    }
+  }
+}
+
+@mixin text(
+  $name: null,
+  $fw: fw(regular),
+  $clr: clr(typo),
+  $lh: $common-lh,
+  $ff: ff(primary),
+  $responsive: true
+) {
+  font-weight: $fw;
+  color: $clr;
+  line-height: $lh;
+  font-family: $ff;
+  @if $name != null {
+    @if $responsive == true {
+      @include generate-responsive-typo-sizes($name, $text-sizes);
+    } @else {
+      font-size: map-deep-get($text-sizes, xl, $name);
+    }
+  }
+}
+
+@mixin title(
+  $number: null,
+  $fw: fw(bold),
+  $clr: clr(typo),
+  $lh: $common-lh,
+  $ff: ff(primary),
+  $responsive: true,
+  $sizes: $title-sizes
+) {
+  font-weight: $fw;
+  color: $clr;
+  line-height: $lh;
+  font-family: $ff;
+  @if $responsive == true {
+    @include generate-responsive-typo-sizes($number, $sizes);
+  } @else {
+    font-size: map-deep-get($sizes, xl, $number);
+  }
+}
+
+@mixin override-gutter($gutter) {
+  [class^='col'] {
+    @include padding(null $gutter/2);
+  }
+  .row {
+    @include margin(null $gutter/-2);
+  }
+}

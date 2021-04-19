@@ -1,8 +1,11 @@
-import { getStrapiMedia } from "./medias";
-
 export function getMetaTags(seo) {
   const tags = [];
-
+  if (seo.metaNoindex) {
+    tags.push({
+      name: "robots",
+      content: "noindex",
+    });
+  }
   if (seo.metaTitle) {
     tags.push(
       {
@@ -32,7 +35,7 @@ export function getMetaTags(seo) {
     );
   }
   if (seo.shareImage) {
-    const imageUrl = getStrapiMedia(seo.shareImage.url);
+    const imageUrl = seo.shareImage.url;
     tags.push(
       {
         name: "image",

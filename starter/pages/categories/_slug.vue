@@ -1,10 +1,22 @@
 <template>
-  <div>
+  <div class="page">
     <client-only>
-      <div class="uk-section">
-        <div class="uk-container uk-container-large">
-          <h1>{{ category.name }}</h1>
-          <Articles :articles="articles || []" />
+      <div class="container">
+        <div class="page-header">
+          <h1 class="tl-1 page-title">{{ category.name }}</h1>
+        </div>
+        <div class="page-content">
+          <Articles
+            v-if="articles.length"
+            :articles="articles"
+            :lazy-params="articlesParams"
+            lazy
+          />
+          <AppNotFound
+            v-else
+            :title="`Sorry, ${category.name} category doesn't contain articles.`"
+            description="Looks like no one has yet added an article with this category."
+          />
         </div>
       </div>
     </client-only>
@@ -12,30 +24,30 @@
 </template>
 
 <script>
-import Articles from "../../components/Articles";
-import { getMetaTags } from "../../utils/seo";
-import { getStrapiMedia } from "../../utils/medias";
+import Articles from "~/components/Articles";
+import AppNotFound from "~/components/AppNotFound";
+import { getMetaTags } from "~/utils/seo";
 
 export default {
   components: {
     Articles,
+    AppNotFound,
   },
-  async asyncData({ $strapi, params }) {
+  async asyncData({ $strapi, $loadArticles, params }) {
+    const searchStr = params.slug || "";
+    const articlesParams = { "category.slug": searchStr };
     const matchingCategories = await $strapi.find("categories", {
-      slug: params.slug,
+      slug: searchStr,
     });
     return {
-      category: matchingCategories[0],
-      articles: await $strapi.find("articles", {
-        "category.name": params.slug,
-      }),
       global: await $strapi.find("global"),
+      articles: await $loadArticles(articlesParams),
+      articlesParams: articlesParams,
+      category: matchingCategories[0],
     };
   },
   head() {
     const { defaultSeo, favicon, siteName } = this.global;
-
-    // Merge default and article-specific SEO data
     const fullSeo = {
       ...defaultSeo,
       metaTitle: `${this.category.name} articles`,
@@ -48,8 +60,9 @@ export default {
       meta: getMetaTags(fullSeo),
       link: [
         {
-          rel: "favicon",
-          href: getStrapiMedia(favicon.url),
+          rel: "icon",
+          type: "image/png",
+          href: favicon.url,
         },
       ],
     };
