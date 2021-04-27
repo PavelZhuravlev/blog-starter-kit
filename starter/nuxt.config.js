@@ -1,9 +1,11 @@
 const env = {
-  GTM_ID: process.env.GTM_ID,
-  BASE_URL: process.env.BASE_URL,
-  STRAPI_URL: process.env.STRAPI_URL,
-  CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
-  ROUTES_TO_EXCLUDE: process.env.ROUTES_TO_EXCLUDE.split(",").filter(Boolean),
+  GTM_ID: process.env.GTM_ID || "GTM-XXXXXXX",
+  BASE_URL: process.env.BASE_URL || "http://localhost:3000",
+  STRAPI_URL: process.env.STRAPI_URL || "http://localhost:1337",
+  CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME || "",
+  ROUTES_TO_EXCLUDE: (process.env.ROUTES_TO_EXCLUDE || "")
+    .split(",")
+    .filter(Boolean),
 };
 
 export default {
