@@ -35,7 +35,10 @@ export default {
         lqip: true,
       };
       const base64Url = Buffer.from(image.url).toString("base64");
-      const component = new Vue({ ...CldImage, ...{ propsData } });
+      const component = new Vue({
+        ...CldImage,
+        ...{ propsData, parent: this },
+      });
       component.$mount(`[data-img="${base64Url}"]`);
     },
   },
