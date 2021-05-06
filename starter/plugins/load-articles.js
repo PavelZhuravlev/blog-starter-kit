@@ -7,6 +7,7 @@ export default ({ $strapi }, inject) => {
       "articles",
       stringify({
         status: "published",
+        _sort: "publishedAt:desc",
         _start: lazyLoadStepCounter * articlesNumberPerStep,
         _limit: articlesNumberPerStep,
         ...extraParams,
