@@ -1,20 +1,24 @@
 <template>
   <div v-if="seo" class="share-action-list">
-    <button
-      v-for="network in transformedNetworks"
-      :key="network.name"
-      class="share-action"
-    >
-      <ShareNetwork
-        :network="network.name"
-        :title="socialNetworkProps.title"
-        :description="socialNetworkProps.description"
-        :media="socialNetworkProps.media"
-        :url="socialNetworkProps.url"
+    <div class="share-action-list-inner">
+      <div
+        v-for="network in transformedNetworks"
+        :key="network.name"
+        class="share-action-container"
       >
-        Share on {{ network.name }}
-      </ShareNetwork>
-    </button>
+        <button class="share-action">
+          <ShareNetwork
+            :network="network.name"
+            :title="socialNetworkProps.title"
+            :description="socialNetworkProps.description"
+            :media="socialNetworkProps.media"
+            :url="socialNetworkProps.url"
+          >
+            Share on {{ network.name }}
+          </ShareNetwork>
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -58,12 +62,19 @@ export default {
 
 <style scoped lang="scss">
 .share-action {
+  $gutter: 10px;
   background-color: clr(dark);
   color: clr(light);
   @include padding(8px);
-  margin-right: 10px;
-  &:last-child {
-    margin-right: 0;
+  &-container {
+    @include padding(null $gutter / 2 $gutter $gutter / 2);
+  }
+  &-list {
+    &-inner {
+      display: flex;
+      flex-wrap: wrap;
+      @include margin(null $gutter / -2 $gutter / -1 $gutter / -2);
+    }
   }
 }
 </style>

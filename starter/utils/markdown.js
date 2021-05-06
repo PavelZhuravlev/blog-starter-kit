@@ -34,7 +34,7 @@ export function renderMarkdown($md, markdown, images) {
   };
   $md.renderer.rules.link_open = (tokens, idx, options, env, slf) => {
     const token = tokens[idx];
-    token.attrs.push(["target", "_blank"]);
+    token.attrs.push(["target", "_blank"], ["rel", "noopener"]);
     return `<a ${slf.renderAttrs(token)}>`;
   };
   const headingRule = (tokens, idx, options, env, slf) => {

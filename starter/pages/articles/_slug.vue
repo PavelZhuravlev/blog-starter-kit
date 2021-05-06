@@ -15,7 +15,7 @@
             </a>
           </p>
         </div>
-        <ArticleSharing :seo="fullSeo" />
+        <ArticleSharing :seo="fullSeo" class="page-share-action-list" />
         <CldImage
           lqip
           :ratio="1.5"
@@ -89,5 +89,13 @@ export default {
 
 <style scoped lang="scss">
 .page-article {
+  .page {
+    &-author {
+      margin-bottom: 10px;
+    }
+    &-share-action-list {
+      margin-bottom: 10px;
+    }
+  }
 }
 </style>
