@@ -68,7 +68,7 @@ It is fully customizable and due to the fact that it is open source, fully open 
 * `STRAPI_URL` - The Strapi backend server (e.g. "http://localhost:1337")
 * `BASE_URL` - The Nuxt frontend server (e.g. "http://localhost:3000")
 * `CLOUDINARY_CLOUD_NAME` - Cloudinary Cloud Name (e.g. "myawesomename")
-* `ROUTES_TO_EXCLUDE` - Routes list (comma-separated) that should be excluded from SEO (Effects sitemap, robots and html indexing) (e.g. "search/,privacy/,terms/")
+* `ROUTES_TO_EXCLUDE` - Routes list (comma-separated) that should be excluded from SEO (Effects sitemap, robots and html indexing) (e.g. "/search,/privacy,/terms")
 
 ### For Strapi Backend:
 
