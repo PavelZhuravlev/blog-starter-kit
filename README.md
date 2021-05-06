@@ -282,4 +282,20 @@ You need to re-build your Nuxt application each time you make content change. To
 5. Create new webhook by clicking **+ ADD NEW WEBHOOK**
 ![webhook-screenshot](/demo-webhook.png)
    
-####Enjoy!
+#### Enjoy!
+
+## Lighthouse Audits
+
+### Home Page
+
+#### Desktop
+![home-desktop](/home-desktop.png)
+#### Mobile
+![home-mobile](/home-mobile.png)
+
+### Article Page
+
+#### Desktop
+![article-desktop](/article-desktop.png)
+#### Mobile
+![article-mobile](/article-mobile.png)
