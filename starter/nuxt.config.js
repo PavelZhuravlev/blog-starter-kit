@@ -124,4 +124,9 @@ export default {
       Disallow: env.ROUTES_TO_EXCLUDE,
     },
   ],
+  build: {
+    babel: {
+      plugins: [["@babel/plugin-proposal-private-methods", { loose: true }]],
+    },
+  },
 };

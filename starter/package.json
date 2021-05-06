@@ -21,7 +21,7 @@
     "bootstrap-4-grid": "^3.4.0",
     "date-fns": "^2.21.1",
     "graphql": "^14.5.8",
-    "nuxt": "^2.14.6",
+    "nuxt": "^2.15.4",
     "qs": "^6.10.1",
     "vue-infinite-loading": "^2.4.5",
     "vue-social-sharing": "^3.0.7"
