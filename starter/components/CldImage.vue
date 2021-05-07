@@ -8,6 +8,13 @@
       :data-lowsrc="lqipUrl"
       data-sizes="auto"
       :alt="alt"
+      @error="onError"
+    />
+    <img
+      v-if="doUseFallbackImage"
+      class="fallback-img"
+      src="https://placeholder.pics/svg/500/DEDEDE/000000-DEDEDE/Fallback Image"
+      alt="Fallback Image"
     />
   </div>
 </template>
@@ -32,6 +39,7 @@ export default {
   },
   data() {
     return {
+      imageNotLoaded: false,
       urlPrefix: `https://res.cloudinary.com/`,
     };
   },
@@ -41,14 +49,13 @@ export default {
         this.image || {
           width: 1200,
           height: 720,
-          url:
-            "https://res.cloudinary.com/pavelzhuravlev/image/upload/v1619045795/Skype_Picture_0ab87aad59.jpg",
-          provider_metadata: {
-            public_id: "Skype_Picture_0ab87aad59",
-            resource_type: "image",
-          },
+          url: "",
+          provider_metadata: {},
         }
       );
+    },
+    doUseFallbackImage() {
+      return !this.image || this.imageNotLoaded;
     },
     publicId() {
       return this.normalizedImage.provider_metadata.public_id;
@@ -72,7 +79,8 @@ export default {
       return calcCssRatio(width, height);
     },
     version() {
-      return this.normalizedImage.url.match(/v\d{10}/)[0];
+      const match = this.normalizedImage.url.match(/v\d{10}/);
+      return match && match[0];
     },
     url() {
       return this.generateUrl(["w_{width}"]);
@@ -93,6 +101,9 @@ export default {
       const paramsStr = params.join(",");
       return `${this.urlPrefix}${this.$config.cldCloudName}/image/upload/${paramsStr}/${this.version}/${this.publicId}`;
     },
+    onError() {
+      this.imageNotLoaded = true;
+    },
   },
 };
 </script>
@@ -108,11 +119,16 @@ export default {
     overflow: hidden;
     position: relative;
     .cld-img,
-    .ls-blur-up-img {
+    .ls-blur-up-img,
+    .fallback-img {
       display: block;
       @include size(100%);
       @include position(absolute, 0 0 null null);
       object-fit: cover;
+    }
+    .fallback-img {
+      transform: scale(1.1);
+      z-index: z(default);
     }
     .ls-blur-up-img {
       filter: blur(5px);
