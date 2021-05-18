@@ -36,10 +36,6 @@ export default {
     {
       src: "~/plugins/load-articles",
     },
-    {
-      src: "~/plugins/rias",
-      mode: "client",
-    },
   ],
   components: false,
   buildModules: [
@@ -67,6 +63,7 @@ export default {
   lazySizes: {
     plugins: {
       blurUp: true,
+      rias: true,
     },
   },
   modules: [
